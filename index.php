@@ -17,4 +17,3 @@ $app->router->run();
 $app_end_time = microtime(true);
 echo '<br>';
 echo ($app_end_time) - ($app_start_time);
-
