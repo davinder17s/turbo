@@ -1,5 +1,16 @@
 {
+    "name": "davinder/turbo",
+    "description": "A power packed php framework",
+    "homepage": "https://github.com/davinder17s/turbo",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Davinder",
+            "homepage": "https://github.com/davinder17s/turbo/graphs/contributors"
+        }
+    ],
     "require":{
+        "php": ">=5.3",
         "symfony/http-foundation": "2.5.*",
         "symfony/routing": "2.5.*"
     }
