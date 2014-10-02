@@ -1,7 +1,8 @@
 <?php
 
 return array(
-	'mode' => 'manual', // mode: auto|manual|both
+	'mode' => 'both', // mode: auto|manual|both
+    'default_controller' => 'home',
 	'routes' => array(
 			'name' => array(
 					'/name/{name}',

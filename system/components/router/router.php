@@ -15,6 +15,7 @@ class Router {
     protected $routes;
     protected $mode;
     protected $controllers_dir;
+    protected $default_controller;
 
     public function __construct()
     {
@@ -28,13 +29,17 @@ class Router {
         $this->getRoutes();
         $parameters = $this->match();
 
-        $this->launch($parameters);
+        if($this->launch($parameters) == false)
+        {
+            $this->showError();
+        }
     }
 
     public function getRoutes()
     {
         $userRoutes = require APPDIR . 'routes.php';
         $this->mode = $userRoutes['mode'];
+        $this->default_controller = $userRoutes['default_controller'];
 
         $routes = new RouteCollection();
 
@@ -65,7 +70,6 @@ class Router {
     
     public function launch($parameters) 
     {
-       
         // Manual Mode
         if($this->mode == 'manual')
         {
@@ -78,19 +82,29 @@ class Router {
         
         // Both Mode
         } elseif ($this->mode == 'both') {
-
-            if(!$this->_launch_manual && !$this->_launch_auto){
-                return false;
+            if (!$this->_launch_manual($parameters)) {
+                if (!$this->_launch_auto($parameters)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
             }
         // Other
         } else {
             $this->message = 'Invalid mode: Please correct your router configuration';
+            return false;
         }
     }
 
     public function _launch_manual($parameters){
-        $controllers_dir = $this->controllers_dir;
-        $controller_info = explode('@', $parameters['controller']);
+        if(!isset($parameters['controller'])){
+            $this->message = 'Path not defined in routes.';
+            return false;
+        }
+            $controllers_dir = $this->controllers_dir;
+            $controller_info = explode('@', $parameters['controller']);
             $controller_path = $controller_info[0];
             $controller_class = end(explode('/', $controller_path));
             $controller_function = $controller_info[1];
@@ -113,7 +127,7 @@ class Router {
                             $params[$key] = $parameters[$key];
                         }
                     }
-                    $this->response = call_user_method_array($controller_function, $object, $params);
+                    $this->response = call_user_func_array(array($controller_class, $controller_function), $params);
                     return true;
                 } else {
                     $this->message = 'Controller Method Not Found.';
@@ -128,5 +142,84 @@ class Router {
                 $this->message = 'Controller file not found.';
                 return false;
             }
+    }
+
+    public function _launch_auto($parameters)
+    {
+        $url_path = $this->app->request()->getPathInfo();
+        $path_parts = explode('/', $url_path);
+
+        $actual_path = array();
+        $actual_parameters = array();
+
+        $controllers_dir = $this->controllers_dir;
+        $default_controller = $this->default_controller;
+        $call_action = 'index';
+
+        $controller = '';
+        foreach ($path_parts as $segment) {
+            if (empty($segment)) {
+                continue;
+            }
+            $path = $controllers_dir . implode('/', $actual_path) .'/' . $segment;
+            if (is_dir($path)) {
+                $actual_path[] = $segment;
+            } else if (is_file($path . '.php')) {
+                $actual_path[] = $segment . '.php';
+                $controller = $segment;
+            } else {
+                $actual_parameters[] = $segment;
+            }
+        }
+
+        if (empty($actual_parameters) && $controller == '') {
+            $actual_path[] = $default_controller . '.php';
+            $controller = $default_controller;
+        }
+        if (count($actual_parameters) >= 1) {
+            $call_action = $actual_parameters[0];
+            unset($actual_parameters[0]);
+            $actual_parameters = array_values($actual_parameters);
+        }
+
+        $launchable = array(
+            'controller_class' => $controller,
+            'action' => $call_action,
+            'parameters' => $actual_parameters,
+            'file_path' => $controllers_dir . implode('/', $actual_path),
+        );
+
+        if (empty($launchable['controller_class'])) {
+            $this->message = '404 Page not found.';
+            return false;
+        } else {
+            if (file_exists($launchable['file_path'])) {
+                require $launchable['file_path'];
+                if (class_exists($launchable['controller_class'])) {
+                    if (method_exists(new $launchable['controller_class'], $launchable['action'])) {
+                        call_user_func_array(
+                            array($launchable['controller_class'], $launchable['action']),
+                            $launchable['parameters']
+                        );
+                        return true;
+                    } else {
+                        $this->message = 'Method does not exists.';
+                        return false;
+                    }
+                } else {
+                    $this->message = 'Class not found.';
+                    return false;
+                }
+            } else {
+                $this->message = 'File does not exists';
+                return false;
+            }
+        }
+
+    }
+    public function showError()
+    {
+        $message = $this->message;
+        echo $message;
     }
 }
