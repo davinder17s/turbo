@@ -29,9 +29,12 @@ class Router {
         $this->getRoutes();
         $parameters = $this->match();
 
-        if($this->launch($parameters) == false)
+        $response = $this->launch($parameters);
+        if($response == false)
         {
             $this->showError();
+        } else {
+            $response->send();
         }
     }
 
@@ -82,14 +85,16 @@ class Router {
         
         // Both Mode
         } elseif ($this->mode == 'both') {
-            if (!$this->_launch_manual($parameters)) {
-                if (!$this->_launch_auto($parameters)) {
+            $manual_response = $this->_launch_manual($parameters);
+            if (!$manual_response) {
+                $auto_response = $this->_launch_auto($parameters);
+                if (!$auto_response) {
                     return false;
                 } else {
-                    return true;
+                    return $auto_response;
                 }
             } else {
-                return true;
+                return $manual_response;
             }
         // Other
         } else {
@@ -127,8 +132,8 @@ class Router {
                             $params[$key] = $parameters[$key];
                         }
                     }
-                    $this->response = call_user_func_array(array($controller_class, $controller_function), $params);
-                    return true;
+                    return call_user_func_array(array(new $controller_class, $controller_function), $params);
+
                 } else {
                     $this->message = 'Controller Method Not Found.';
                     return false;
@@ -197,11 +202,9 @@ class Router {
                 require $launchable['file_path'];
                 if (class_exists($launchable['controller_class'])) {
                     if (method_exists(new $launchable['controller_class'], $launchable['action'])) {
-                        call_user_func_array(
-                            array($launchable['controller_class'], $launchable['action']),
+                        return call_user_func_array(array(new $launchable['controller_class'], $launchable['action']),
                             $launchable['parameters']
                         );
-                        return true;
                     } else {
                         $this->message = 'Method does not exists.';
                         return false;
@@ -223,3 +226,5 @@ class Router {
         echo $message;
     }
 }
+
+App::register('router', new Router);

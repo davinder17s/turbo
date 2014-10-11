@@ -1,14 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: adminpc
- * Date: 2/10/14
- * Time: 4:35 PM
- */
 
-class home {
-    function index($param1, $param2)
+
+class home extends Controller{
+    function __construct()
     {
-        echo 'sdfsdf'. $param1 . $param2;
+        parent::__construct();
+    }
+    function index()
+    {
+        $data = array(
+            'name' => 'hello'
+        );
+        return View::make('home.twig', $data);
     }
 }
+

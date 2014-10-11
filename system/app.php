@@ -42,12 +42,17 @@ class App {
             if(is_dir($components_dir . $component_name))
             {
                 require $components_dir . $component_name . '/' . $component_name . '.php';
-                $component = new $component_name;
-                $this->container[strtolower($component_name)] = $component;
             }
         }
 
         require SYSDIR . 'framework/framework.php';
+    }
+
+    public static function register($component_name, $component)
+    {
+        $app = App::instance();
+        $app->container[strtolower($component_name)] = $component;
+        return true;
     }
 
     protected function _autoload()

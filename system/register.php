@@ -5,4 +5,7 @@
 
 return array(
 	'router',
+    'controller',
+    'eloquent',
+    'twig'
 );
