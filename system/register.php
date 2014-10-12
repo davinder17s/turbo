@@ -7,5 +7,8 @@ return array(
 	'router',
     'controller',
     'eloquent',
-    'twig'
+    'auth',
+    'twig',
+    'image',
+    'email'
 );

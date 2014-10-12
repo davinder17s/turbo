@@ -19,7 +19,6 @@ class Router {
 
     public function __construct()
     {
-        $this->response = new Response('Not Found', 404);
         $this->app = App::instance();
         $this->controllers_dir = APPDIR . 'controllers/';
     }
@@ -98,14 +97,14 @@ class Router {
             }
         // Other
         } else {
-            $this->message = 'Invalid mode: Please correct your router configuration';
+            $this->message = 'ERROR_ROUTER_CONFIG';
             return false;
         }
     }
 
     public function _launch_manual($parameters){
         if(!isset($parameters['controller'])){
-            $this->message = 'Path not defined in routes.';
+            $this->message = 'ERROR_CONTROLLER_NOT_DEFINED';
             return false;
         }
             $controllers_dir = $this->controllers_dir;
@@ -135,16 +134,16 @@ class Router {
                     return call_user_func_array(array(new $controller_class, $controller_function), $params);
 
                 } else {
-                    $this->message = 'Controller Method Not Found.';
+                    $this->message = 'ERROR_CONTROLLER_METHOD_NOT_FOUND';
                     return false;
                 }
                 } else {
-                    $this->message = 'Controller class not found';
+                    $this->message = 'ERROR_CONTROLLER_CLASS_NOT_FOUND';
                     return false;
                 }
                 
             } else {
-                $this->message = 'Controller file not found.';
+                $this->message = 'ERROR_CONTROLLER_FILE_NOT_FOUND';
                 return false;
             }
     }
@@ -195,7 +194,7 @@ class Router {
         );
 
         if (empty($launchable['controller_class'])) {
-            $this->message = '404 Page not found.';
+            $this->message = 'ERROR_CONTROLLER_NOT_DEFINED';
             return false;
         } else {
             if (file_exists($launchable['file_path'])) {
@@ -206,15 +205,15 @@ class Router {
                             $launchable['parameters']
                         );
                     } else {
-                        $this->message = 'Method does not exists.';
+                        $this->message = 'ERROR_CONTROLLER_METHOD_NOT_FOUND';
                         return false;
                     }
                 } else {
-                    $this->message = 'Class not found.';
+                    $this->message = 'ERROR_CONTROLLER_CLASS_NOT_FOUND';
                     return false;
                 }
             } else {
-                $this->message = 'File does not exists';
+                $this->message = 'ERROR_CONTROLLER_FILE_NOT_FOUND';
                 return false;
             }
         }
@@ -222,8 +221,16 @@ class Router {
     }
     public function showError()
     {
-        $message = $this->message;
-        echo $message;
+        ob_clean();
+        $codes = require SYSDIR . 'framework/error_codes.php';
+        $code = $this->message;
+        $message = $codes[$code];
+        $data = array(
+            'ERROR_CODE' => $code,
+            'ERROR_MESSAGE' => $message
+        );
+        $response = View::make('404.twig', $data, 404);
+        $response->send();
     }
 }
 

@@ -13,6 +13,7 @@ $twig = new Twig_Environment($loader, array(
 require __DIR__ . '/configure.php';
 require __DIR__ . '/view.php';
 
+
 App::register('twig', $twig);
 
 TwigConfiguration::setup();

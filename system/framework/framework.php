@@ -1,3 +1,3 @@
-<?php 
-function base_url(){
-}
+<?php
+
+require SYSDIR . 'framework/helpers/url.php';

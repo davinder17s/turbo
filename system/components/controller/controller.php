@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . '/redirect.php';
+
 class Controller {
     protected $app;
 
@@ -7,6 +9,7 @@ class Controller {
     {
         $app = App::instance();
         $this->app = $app;
+
     }
 
     public function __get($name)
@@ -20,7 +23,7 @@ class Controller {
             if (
                 !empty($params)
                 &&
-                in_array($name, array('get', 'post', 'server', 'cookies', 'attributes', 'files', 'headers')))
+                in_array($name, array('get', 'post', 'server', 'cookies', 'attributes', 'files', 'headers', 'session', 'flash')))
             {
                 return $this->app->$name()->get($params[0]);
             }

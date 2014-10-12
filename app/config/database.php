@@ -5,7 +5,7 @@ return array(
     'host' => '127.0.0.1',
     'username' => 'root',
     'password' => '',
-    'database' => 'garbini',
+    'database' => '',
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
     'prefix'    => '',

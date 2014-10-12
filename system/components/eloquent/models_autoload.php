@@ -3,7 +3,40 @@
 use Illuminate\Database\Eloquent\Model as Model;
 
 class EloquentModel extends Model{
-    // dummy class for shorthand productivity
+    public $last_email_html = '';
+    function sendEmail($email_template, $additional_data = array(), $subject= '', $from_email = '', $from_name ='')
+    {
+        $config = require APPDIR . 'config/email.php';
+        $app = App::instance();
+        $data = array(
+            'user' => $this,
+            'data' => $additional_data
+        );
+        $message = $app->twig->render('emails/' . $email_template, $data);
+        $this->last_email_html = $message;
+
+        $mail = $app->email;
+        foreach ($config as $key => $value) {
+            $mail->$key = $value;
+        }
+
+        if ($from_email) {
+            $mail->From = $from_email;
+        }
+
+        if ($from_name) {
+            $mail->FromName = $from_name;
+        }
+
+        $mail->Subject = $subject;
+        $mail->Body = $message;
+
+        $mail->addAddress($this->email);
+        $mail->send();
+
+
+        return $this;
+    }
 }
 
 $models_dir = APPDIR . 'eloquent/';

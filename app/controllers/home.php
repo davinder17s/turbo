@@ -1,17 +1,11 @@
 <?php
 
 
-class home extends Controller{
-    function __construct()
-    {
-        parent::__construct();
-    }
+class Home extends Controller{
+
     function index()
     {
-        $data = array(
-            'name' => 'hello'
-        );
-        return View::make('home.twig', $data);
+        return View::make('home.twig');
     }
 }
 

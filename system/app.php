@@ -1,5 +1,6 @@
 <?php
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class App {
     protected $request;
@@ -12,6 +13,11 @@ class App {
     protected $files;
     protected $server;
     protected $headers;
+    protected $session;
+    protected $flash;
+
+    protected $errors;
+    protected $previous;
 
     public $container = array();
 
@@ -25,12 +31,26 @@ class App {
         $this->files = $request->files;
         $this->server = $request->server;
         $this->headers = $request->server;
+
+        $session = new Session();
+        $session->start();
+        $this->session = $session;
+        $this->flash = $this->session->getFlashBag();
+
+        $messages = $this->_cast('Illuminate\Support\MessageBag', (object)$this->flash->get('errors'));
+        $this->errors = $messages;
+        $this->previous = $this->flash->get('input_old');
     }
 
     public function start()
     {
         $this->_boot_framework();
         $this->_autoload();
+    }
+
+    public function _cast($class, $object)
+    {
+        return unserialize(preg_replace('/^O:\d+:"[^"]++"/', 'O:' . strlen($class) . ':"' . $class . '"', serialize($object)));
     }
 
     protected function _boot_framework()
@@ -129,4 +149,5 @@ class App {
         global $app;
         return $app;
     }
+
 }
