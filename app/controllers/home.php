@@ -3,9 +3,8 @@
 
 class Home extends Controller{
 
-    function index()
+    function getIndex()
     {
         return View::make('home.twig');
     }
 }
-
