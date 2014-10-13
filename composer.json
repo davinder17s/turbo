@@ -18,6 +18,9 @@
         "phpmailer/phpmailer": "5.2.*",
         "illuminate/validation": "4.2.*",
         "symfony/config": "2.5.*",
-        "omnipay/omnipay": "2.3.*"
+        "omnipay/omnipay": "2.3.*",
+        "moltin/cart": "dev-master@dev",
+        "moltin/tax": "dev-master@dev",
+        "moltin/currency": "dev-master@dev"
     }
 }

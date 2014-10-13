@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
 * Framework Registry
 */
@@ -10,5 +10,6 @@ return array(
     'auth',
     'twig',
     'image',
-    'email'
+    'email',
+		'cart'
 );
