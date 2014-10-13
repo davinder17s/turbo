@@ -17,6 +17,7 @@
         "twig/twig": "1.16.*",
         "phpmailer/phpmailer": "5.2.*",
         "illuminate/validation": "4.2.*",
-        "symfony/config": "2.5.*"
+        "symfony/config": "2.5.*",
+        "omnipay/omnipay": "2.3.*"
     }
 }
