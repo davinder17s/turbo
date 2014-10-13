@@ -27,7 +27,7 @@
             margin-top: -100px;
             margin-left: 50px;
             color: #FFF;
-            font-family: Roboto;
+            font-family: 'Roboto';
             font-weight: 300;
         }
         .message-box h1 {
@@ -58,21 +58,41 @@
 
         #Polygon-1 , #Polygon-2 , #Polygon-3 , #Polygon-4 , #Polygon-4, #Polygon-5 {
             animation: float 1s infinite ease-in-out alternate;
+            -moz-animation: float 1s infinite ease-in-out alternate;
+            -webkit-animation: float 1s infinite ease-in-out alternate;
         }
         #Polygon-2 {
             animation-delay: .2s;
+            -moz-animation-delay: .2s;
+            -webkit-animation-delay: .2s;
         }
         #Polygon-3 {
             animation-delay: .4s;
+            -moz-animation-delay: .4s;
+            -webkit-animation-delay: .4s;
         }
         #Polygon-4 {
             animation-delay: .6s;
+            -moz-animation-delay: .6s;
+            -webkit-animation-delay: .6s;
         }
         #Polygon-5 {
             animation-delay: .8s;
+            -moz-animation-delay: .8s;
+            -webkit-animation-delay: .8s;
         }
 
         @keyframes float {
+            100% {
+                transform: translateY(20px);
+            }
+        }
+        @-moz-keyframes float {
+            100% {
+                transform: translateY(20px);
+            }
+        }
+        @-webkit-keyframes float {
             100% {
                 transform: translateY(20px);
             }

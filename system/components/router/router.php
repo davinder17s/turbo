@@ -72,6 +72,7 @@ class Router {
     
     public function launch($parameters) 
     {
+
         // Manual Mode
         if($this->mode == 'manual')
         {
@@ -188,7 +189,7 @@ class Router {
 
         $launchable = array(
             'controller_class' => $controller,
-            'action' => $call_action,
+            'action' => $this->app->request()->getMethod() . $call_action,
             'parameters' => $actual_parameters,
             'file_path' => $controllers_dir . implode('/', $actual_path),
         );
@@ -235,3 +236,5 @@ class Router {
 }
 
 App::register('router', new Router);
+
+require __DIR__ . '/uri.php';

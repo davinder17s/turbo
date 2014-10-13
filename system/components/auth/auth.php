@@ -108,6 +108,34 @@ class Auth {
         }
     }
 
+    public static function permission($type, $message='', $redirect = '')
+    {
+        $allowed = false;
+        $auth = new Auth();
+        $auth->type = $type;
+        if ($auth->check()) {
+            $allowed = true;
+        }
+
+        if ($allowed == true) {
+            return true;
+        } else {
+            if ($message != '') {
+                $error = $message;
+            } else {
+                $error = 'You are not allowed to view this page.';
+            }
+
+            if ($redirect != '') {
+                App::instance()->flash()->set('permission_error', $error);
+                Redirect::to($redirect)->send();
+            } else {
+                \Symfony\Component\HttpFoundation\Response::create($error, 403)->send();
+                exit;
+            }
+        }
+    }
+
     public static function __callStatic($name, $params)
     {
         $authClass = new Auth();

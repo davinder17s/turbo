@@ -2,8 +2,10 @@
 
 function baseUrl($path = ''){
     $baseUrl = App::instance()->request()->getBaseUrl();
-    $strippedBaseUrl = str_replace('index.php', '', $baseUrl);
-    return $strippedBaseUrl . $path;
+    $strippedBaseUrl = str_replace('index.php/', '', $baseUrl);
+    $generated = $strippedBaseUrl .'/'. $path;
+    $sanitized = str_replace('index.php/', '', $generated);
+    return $sanitized;
 }
 
 function siteUrl($path = '')

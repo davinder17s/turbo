@@ -7,8 +7,10 @@ $twig = new Twig_Environment($loader, array(
     'auto_reload' => true,
     'strict_variables' => false,
     'optimizations' => -1,
-    'autoescape' => false
+    'autoescape' => false,
+    'debug' => false
 ));
+$twig->disableDebug();
 
 require __DIR__ . '/configure.php';
 require __DIR__ . '/view.php';
