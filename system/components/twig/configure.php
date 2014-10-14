@@ -4,9 +4,17 @@ class TwigConfiguration {
     public static function setup()
     {
         $app = App::instance();
-        $global = (array) require __DIR__ . '/extend/global.php';
-        $filters = (array) require __DIR__ . '/extend/filters.php';
-        $functions = (array) require __DIR__ . '/extend/functions.php';
+        $default_global = (array) require __DIR__ . '/extend/global.php';
+        $default_filters = (array) require __DIR__ . '/extend/filters.php';
+        $default_functions = (array) require __DIR__ . '/extend/functions.php';
+
+        $user_global = (array) require APPDIR . 'twig/extend/global.php';
+        $user_filters = (array) require APPDIR . 'twig/extend/filters.php';
+        $user_functions = (array) require APPDIR . 'twig/extend/functions.php';
+
+        $global = array_merge($default_global, $user_global);
+        $filters = array_merge($default_filters, $user_filters);
+        $functions = array_merge($default_functions, $user_functions);
 
         foreach ($global as $name => $callable)
         {

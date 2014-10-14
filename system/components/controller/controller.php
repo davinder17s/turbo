@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . '/redirect.php';
+require __DIR__ . '/response.php';
 
 class Controller {
     protected $app;
