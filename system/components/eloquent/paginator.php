@@ -30,7 +30,7 @@ class Paginator{
         if (file_exists(APPDIR . 'config/pagination.php')) {
             $config = require APPDIR . 'config/pagination.php';
         }
-        $layout = array_merge($defaults, $config);
+        $layout = array_merge($defaults, $config[ $config['default'] ]);
 
         $pages = ceil($count / $per_page);
 

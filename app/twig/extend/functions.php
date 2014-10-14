@@ -1,18 +1,23 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: PC
- * Date: 10/14/2014
- * Time: 10:38 PM
+ * Twig Functions extensions
+ *
+ * Example:
+ *
+ * return array(
+ *    'count' => function($array){
+ *         return count($array);
+ *     },
+ *    'time' => 'time'  // pass to already defined function
+ * );
+ *
+ * Usage in your view files:
+ *
+ * {{ count(posts) }}
+ *
+ * Read more about extensions at http://twig.sensiolabs.com
  */
 
 return array(
-    'get_option' => function ($option_name) {
-        $option = Option::where('option', '=', $option_name)->first();
-        if ($option) {
-            return $option->value;
-        } else {
-            return false;
-        }
-    }
+    
 );

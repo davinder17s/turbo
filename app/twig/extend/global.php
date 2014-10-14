@@ -1,9 +1,20 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: PC
- * Date: 10/14/2014
- * Time: 10:38 PM
+ * Twig Global variable extensions
+ *
+ * Example:
+ *
+ * return array(
+ *    'pi' => 3.14,
+ *    'server' => App::instance()->server()->all()
+ * );
+ *
+ * Usage in your view files:
+ *
+ * {{ pi }}
+ * {{ server['REMOTE_ADDR'] }}
+ *
+ * Read more about extensions at http://twig.sensiolabs.com
  */
 
 return array(

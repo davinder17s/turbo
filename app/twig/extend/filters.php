@@ -1,9 +1,19 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: PC
- * Date: 10/14/2014
- * Time: 10:38 PM
+ * Twig Filters extensions
+ *
+ * Example:
+ *
+ * return array(
+ *    'date' => function($timestamp){
+ *         return date('D d M y', $timestamp);
+ *     }
+ * );
+ *
+ * Usage in your view files:
+ *
+ * {{ post.timestamp | date }}
+ *
  */
 
 return array(
