@@ -1,30 +1,18 @@
 <?php
 
-use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\MessageSelector;
-use Symfony\Component\Translation\Loader\ArrayLoader;
+use Acme\Validation\Capsule\Manager as Validation;
 
-class Validator {
-
-    protected static $factory;
-
-    public static function instance()
+class Validator{
+    public static function __callStatic($name, $args)
     {
-        if ( ! static::$factory)
-        {
-            $translator = new Translator('en', new MessageSelector());
-            $translator->setFallbackLocales(array('en'));
-            $translator->addLoader('array', new ArrayLoader());
-            $translator->addResource('array', require APPDIR . 'lang/en/validation.php', 'en');
-            static::$factory = new Illuminate\Validation\Factory($translator);
-        }
+        // Define the locale and the path to the language directory.
+        $validation = new Validation('en', APPDIR .'/lang');
+        // Adding a database connection is optional. Only used for
+        // the Exists and Unique rules.
+        $db_config = require APPDIR . 'config/database.php';
+        $validation->setConnection($db_config);
+        $validator = $validation->getValidator();
 
-        return static::$factory;
-    }
-
-    public static function __callStatic($method, $args)
-    {
-        $instance = static::instance();
-        return call_user_func_array(array($instance, $method), $args);
+        return call_user_func_array(array($validator, $name), $args);
     }
 }

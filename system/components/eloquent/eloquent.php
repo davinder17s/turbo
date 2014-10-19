@@ -21,8 +21,10 @@ $capsule->bootEloquent();
 
 require __DIR__ . '/db.php';
 require __DIR__ . '/paginator.php';
+require __DIR__ . '/manager.php';
 require __DIR__ . '/validator.php';
 require __DIR__ . '/filter.php';
 require __DIR__ . '/models_autoload.php';
 
 App::register('db', new DB);
+
