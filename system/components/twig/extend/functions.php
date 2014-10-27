@@ -3,6 +3,8 @@
 return array(
     'siteUrl' => 'siteUrl',
     'baseUrl' => 'baseUrl',
+    'fullSiteUrl' => 'fullSiteUrl',
+    'fullBaseUrl' => 'fullBaseUrl',
     'date' => 'date',
     'asset' => function($path = ''){
         return baseUrl('web/' . $path);

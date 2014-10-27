@@ -8,6 +8,12 @@ function baseUrl($path = ''){
     return $sanitized;
 }
 
+function isSecure() {
+    return
+        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || $_SERVER['SERVER_PORT'] == 443;
+}
+
 function siteUrl($path = '')
 {
     $environment_config = require APPDIR . 'config/environment.php';
@@ -17,6 +23,20 @@ function siteUrl($path = '')
     }
     $generated = baseUrl() . $index_page . $path;
     return str_replace('//', '/', $generated);
+}
+
+function fullSiteUrl($path)
+{
+    $protocol = isSecure()? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'];
+    return $protocol . $host . siteUrl($path);
+}
+
+function fullBaseUrl($path)
+{
+    $protocol = isSecure()? 'https://' : 'http://';
+    $host = $_SERVER['HTTP_HOST'];
+    return $protocol . $host . baseUrl($path);
 }
 
 function upload($file, $path = 'uploads/', $all = false)
