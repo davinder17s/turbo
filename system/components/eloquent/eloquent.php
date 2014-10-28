@@ -25,6 +25,7 @@ require __DIR__ . '/manager.php';
 require __DIR__ . '/validator.php';
 require __DIR__ . '/filter.php';
 require __DIR__ . '/models_autoload.php';
+require __DIR__ . '/user_paginator.php';
 
 App::register('db', new DB);
-
+App::register('paginator', new UserPaginator);

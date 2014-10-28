@@ -32,6 +32,12 @@ class Paginator{
         }
         $layout = array_merge($defaults, $config[ $config['default'] ]);
 
+        $userPaginationLayout = App::instance()->paginator->getDefault();
+        if($userPaginationLayout)
+        {
+          $layout = $config[$userPaginationLayout];
+        }
+
         $pages = ceil($count / $per_page);
 
         $links_html = $layout['wrapper'] . "\r\n";
