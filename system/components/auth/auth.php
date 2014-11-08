@@ -84,6 +84,16 @@ class Auth {
         }
     }
 
+    public function refresh()
+    {
+        if ($this->id() && $this->type) {
+            $credentials = array(
+                'id' => $this->id()
+            );
+            $this->authenticate($credentials);
+        }
+    }
+
     public function id()
     {
         if (!empty($this->auth)) {

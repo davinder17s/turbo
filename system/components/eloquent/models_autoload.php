@@ -4,14 +4,14 @@ use Illuminate\Database\Eloquent\Model as Model;
 
 class EloquentModel extends Model{
     public $last_email_html = '';
-    function sendEmail($email_template, $additional_data = array(), $subject= '', $from_email = '', $from_name ='')
+    function sendEmail($email_template, $subject= '', $additional_data = array(), $from_email = '', $from_name ='')
     {
         $config = require APPDIR . 'config/email.php';
         $app = App::instance();
         $data = array(
             'user' => $this,
-            'data' => $additional_data
         );
+        $data = array_merge($data, $additional_data);
         $message = $app->twig->render('emails/' . $email_template, $data);
         $this->last_email_html = $message;
 
@@ -30,7 +30,7 @@ class EloquentModel extends Model{
 
         $mail->Subject = $subject;
         $mail->Body = $message;
-
+        $mail->isHTML($config['isHTML']);
         $mail->addAddress($this->email);
         $mail->send();
 
