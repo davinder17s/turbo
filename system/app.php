@@ -90,8 +90,7 @@ class App {
     protected function _autoload_packages()
     {
         $package_dir = APPDIR . 'packages/';
-        $packages = scandir($package_dir);
-        unset($packages[0], $packages[1]);
+        $packages = $this->autoload['packages'];
 
         foreach ($packages as $package_name)
         {
@@ -104,8 +103,7 @@ class App {
     protected function _autoload_libraries()
     {
         $library_dir = APPDIR . 'libraries/';
-        $libraries = scandir($library_dir);
-        unset($libraries[0], $libraries[1]);
+        $libraries = $this->autoload['libraries'];
 
         foreach ($libraries as $library_name)
         {
@@ -120,8 +118,7 @@ class App {
     protected function _autoload_models()
     {
         $model_dir = APPDIR . 'models/';
-        $models = scandir($model_dir);
-        unset($models[0], $models[1]);
+        $models = $this->autoload['models'];
 
         foreach ($models as $model_name)
         {
