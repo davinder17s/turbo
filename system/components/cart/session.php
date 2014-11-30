@@ -1,19 +1,30 @@
 <?php
-namespace Moltin\Cart\Storage;
 
-use Moltin\Cart\Storage\Session;
-use Moltin\Cart\Item;
+use Cart\StoreInterface;
 
-class TurboSession extends Session {
-  /**
-   * Add or update an item in the cart
-   *
-   * @param  Item   $item The item to insert or update
-   * @return void
-   */
-  public function insertUpdate(Item $item)
-  {
-      static::$cart[$this->id][$item->identifier] = $item;
-      $_SESSION['cart'] = serialize(static::$cart);
-  }
+class SessionStore implements StoreInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function get($cartId)
+    {
+        return isset($_SESSION[$cartId]) ? $_SESSION[$cartId] : array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function put($cartId, $data)
+    {
+        $_SESSION[$cartId] = $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush($cartId)
+    {
+        unset($_SESSION[$cartId]);
+    }
 }

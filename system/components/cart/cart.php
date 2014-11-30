@@ -1,12 +1,43 @@
 <?php
+//use Cart\SessionStore;
+use Cart\CartItem;
 
-use Moltin\Cart\Cart as Shop;
-use Moltin\Cart\Storage\Session;
-use Moltin\Cart\Storage\TurboSession;
-use Moltin\Cart\Identifier\Cookie;
+class TurboCart{
+  public $cart;
+  public function __construct()
+  {
+    require __DIR__ . '/session.php';
+    $cart = new Cart\Cart('cart1', new SessionStore());
+    $this->cart = $cart;
+    if($this->cart->getStore()->get('cart1') != false)
+    {
+      $this->cart->restore();
+    }
 
-require __DIR__ . '/session.php';
+  }
 
-$cart = new Shop(new TurboSession, new Cookie);
+  public function insert($data)
+  {
+    $item = new CartItem;
+    foreach($data as $key => $value)
+    {
+      $item->$key = $value;
+    }
+    $this->cart->add($item);
+    $this->cart->save();
+  }
 
-App::register('cart', $cart);
+  public function findItemId($key)
+  {
+    return $this->cart->all()[$key]->getId();
+  }
+
+  public function __call($method, $params)
+  {
+    $result = call_user_func_array(array($this->cart, $method), $params);
+    $this->cart->save();
+    return $result;
+  }
+}
+
+App::register('cart', new TurboCart());
