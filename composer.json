@@ -18,8 +18,9 @@
         "illuminate/translation": "4.2.*",
         "twig/twig": "1.16.*",
         "phpmailer/phpmailer": "5.2.*",
-        "symfony/config": "2.5.*",
         "omnipay/omnipay": "2.3.*",
-        "mike182uk/cart" : "2.1.*"
+        "mike182uk/cart" : "2.1.*",
+        "symfony/translation": "2.5.*",
+        "symfony/config": "2.5.*"
     }
 }

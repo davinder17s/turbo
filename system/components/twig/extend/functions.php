@@ -27,5 +27,21 @@ return array(
     },
     'auth' => function ($type) {
         return Auth::$type();
+    },
+    'trans' => function ($key = '', $vars = array()) {
+        $template = null;
+        foreach (debug_backtrace() as $trace) {
+            if (isset($trace['object']) && $trace['object'] instanceof Twig_Template && 'Twig_Template' !== get_class($trace['object'])) {
+                $template = $trace['object'];
+            }
+        }
+
+        $templatename = $template->getTemplateName();
+        $app = App::instance();
+
+        if (is_object($vars)) {
+            $vars = (array)$vars;
+        }
+        return $app->translator->trans($key, $templatename, $vars);
     }
 );

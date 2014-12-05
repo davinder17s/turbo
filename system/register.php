@@ -1,15 +1,16 @@
 <?php
 /**
-* Framework Registry
-*/
+ * Framework Registry
+ */
 
 return array(
-	'router',
+    'router',
     'controller',
     'eloquent',
     'auth',
     'twig',
     'image',
     'email',
-		'cart'
+    'cart',
+    'translator'
 );
