@@ -28,17 +28,19 @@ return array(
     'auth' => function ($type) {
         return Auth::$type();
     },
-    'trans' => function ($key = '', $vars = array()) {
-        $template = null;
-        foreach (debug_backtrace() as $trace) {
-            if (isset($trace['object']) && $trace['object'] instanceof Twig_Template && 'Twig_Template' !== get_class($trace['object'])) {
-                $template = $trace['object'];
-            }
-        }
-
-        $templatename = $template->getTemplateName();
+    'trans' => function ($key = '', $vars = array(), $file = '') {
         $app = App::instance();
-
+        if ($file == '') {
+            $template = null;
+            foreach (debug_backtrace() as $trace) {
+                if (isset($trace['object']) && $trace['object'] instanceof Twig_Template && 'Twig_Template' !== get_class($trace['object'])) {
+                    $template = $trace['object'];
+                }
+            }
+            $templatename = $template->getTemplateName();
+        } else {
+            $templatename = $file . '.twig';
+        }
         if (is_object($vars)) {
             $vars = (array)$vars;
         }
