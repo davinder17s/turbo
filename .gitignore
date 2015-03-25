@@ -3,3 +3,4 @@ vendor/
 app/cache/*
 !app/cache/index.html
 composer.phar
+composer.lock
