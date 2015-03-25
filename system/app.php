@@ -147,4 +147,9 @@ class App {
         return $app;
     }
 
+    public function shutdown()
+    {
+        // something to do for shutdown
+    }
+
 }

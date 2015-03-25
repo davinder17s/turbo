@@ -3,7 +3,7 @@
 /**
  * Class Home extends Controller
  *
- * Must return \Symfony\Component\HttpFoundation\Response Object
+ * Must return SymfonyComponentHttpFoundationResponse Object
  *
  * This controller is fully restful and will require to specify the access method get/post before name to work.
  */
