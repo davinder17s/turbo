@@ -4,3 +4,6 @@ app/cache/*
 !app/cache/index.html
 composer.phar
 composer.lock
+app/controllers/develop/
+app/views/develop/
+web/develop/

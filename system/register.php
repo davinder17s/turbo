@@ -12,5 +12,6 @@ return array(
     'image',
     'email',
     'cart',
-    'translator'
+    'translator',
+    'datatables'
 );
